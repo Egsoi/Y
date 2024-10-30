@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Document</title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+   <style>
+      :root {
+         --color: black;
+         --toolcolor: #808080;
+         --backgroundcolor: #26282c;
+         --secondcolor: #2c918e;
+         --color-accent: #fffff;
+         --shadow-dark: #18191b;
+         --shadow-light: #34373d;
+         --gradient-dark: #292b2f;
+         --gradient-light: #222428;
+         --highlight: #ff6f00;
+      }
+
+
+      body {
+         font-family: "Poppins", sans-serif;
+         letter-spacing: 1px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin: 0;
+         color: white;
+         min-height: 100vh;
+         background: #d9d9d9;
+                  background-color: var(--backgroundcolor);
+
+      }
+
+      .calculatorWrap {
+         border-radius: 30px;
+         box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+      }
+
+      .calculator {
+         position: relative;
+         padding: 20px;
+         padding-top: 60px;
+         border-radius: 25px;
+         width: 400px;
+         background-color: var(--backgroundcolor);
+      }
+
+      .screenWrap {}
+
+      #screen {
+         padding-top: 0;
+         margin-top: -5px;
+      }
+
+      #screen2 {
+         font-size: 1.5rem;
+         opacity: 0.7;
+         padding-bottom: 0;
+         font-weight: 100;
+
+      }
+
+      .calculator-screen {
+         background-color: var(--backgroundcolor);
+         color: var(--color-accent);
+         border: none;
+         border-radius: 15px;
+         width: 100%;
+         padding: 0px 15px;
+         box-sizing: border-box;
+         text-align: right;
+         font-size: 4rem;
+      }
+
+      .calculator-keys {
+         display: grid;
+         grid-template-columns: repeat(4, 1fr);
+         gap: 25px;
+         padding: 20px 3%;
+      }
+
+      button {
+         color: var(--color-accent);
+         font-size: 2rem;
+         font-weight: 400;
+         border: none;
+         height: 60px;
+         border-radius: 20px;
+         background: var(--backgroundcolor);
+         box-shadow: 4px 4px 8px var(--shadow-dark),
+            -4px -4px 8px var(--shadow-light);
+      }
+
+      button:hover {
+         box-shadow: 2px 2px 5px var(--shadow-dark),
+            -2px -2px 5px var(--shadow-light);
+      }
+
+      button:active {
+         background: var(--backgroundcolor);
+         box-shadow: inset 2px 2px 5px var(--shadow-dark),
+            inset -2px -2px 5px var(--shadow-light);
+      }
+
+      button.operator {
+         font-size: 2rem;
+         color: var(--highlight);
+      }
+
+      button.equal-sign {
+         grid-column: span 4;
+         color: var(--color-accent);
+         font-size: 1.5rem;
+      }
+
+      button.all-clear {
+         color: var(--color-accent);
+         font-size: 1.5rem;
+      }
+
+      #toggle-switch {
+         position: absolute;
+         border-radius: 50px;
+         right: 10px;
+         top: 10px;
+      }
+
+
+      .toggle-switch {
+         position: relative;
+         width: 60px;
+         display: inline-block;
+         height: 34px;
+      }
+
+      .toggle-switch input {
+         opacity: 0;
+         width: 0;
+         height: 0;
+      }
+
+      .slider {
+         position: absolute;
+         cursor: pointer;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         box-shadow: inset 4px 4px 10px #bebebe,
+            inset -4px -4px 10px #d9d9d9;
+      }
+
+      .slider:before {
+         position: absolute;
+         content: "";
+         height: 26px;
+         width: 26px;
+         left: 4px;
+         bottom: 4px;
+         background-color: white;
+         transition: transform .4s ease-in-out;
+      }
+
+      input:checked+.slider {}
+
+      input:checked+.slider:before {
+         transform: translateX(26px);
+         background-color: #26282c;
+      }
+
+      .slider.round {
+         border-radius: 34px;
+      }
+
+      .slider.round:before {
+         border-radius: 50%;
+      }
+   </style>
+
+</head>
+
+<body>
+
+
+
+
+
+   <div id="toggle-switch">
+      <label class="toggle-switch">
+         <input type="checkbox" id="themeToggle">
+         <span class="slider round"></span>
+      </label>
+   </div>
+   <div class="calculatorWrap">
+      <div class="calculator">
+         <div class="screenWrap">
+            <input type="text" class="calculator-screen" id="screen2" disabled>
+            <input type="text" class="calculator-screen" id="screen" disabled>
+         </div>
+         <div class="calculator-keys">
+            <button value="1">1</button>
+            <button value="2">2</button>
+            <button value="3">3</button>
+            <button class="operator" value="+">+</button>
+            <button value="4">4</button>
+            <button value="5">5</button>
+            <button value="6">6</button>
+            <button class="operator" value="-">-</button>
+            <button value="7">7</button>
+            <button value="8">8</button>
+            <button value="9">9</button>
+            <button class="operator" value="*">&times;</button>
+            <button value="0">0</button>
+            <button value=".">.</button>
+            <button class="all-clear" value="all-clear">AC</button>
+            <button class="operator" value="/">&divide;</button>
+            <button class="equal-sign" value="=">=</button>
+         </div>
+      </div>
+   </div>
+
+   <script>
+      document.addEventListener('DOMContentLoaded', () => {
+         const calculator = {
+            displayValue: '0',
+            firstOperand: null,
+            waitingForSecondOperand: false,
+            operator: null,
+            history: '', // To keep track of the expression
+         };
+
+         function inputDigit(digit) {
+            const { displayValue, waitingForSecondOperand } = calculator;
+
+            if (waitingForSecondOperand === true) {
+               calculator.displayValue = digit;
+               calculator.waitingForSecondOperand = false;
+            } else {
+               calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+            }
+         }
+
+         function inputDecimal(dot) {
+            if (calculator.waitingForSecondOperand === true) return;
+
+            if (!calculator.displayValue.includes(dot)) {
+               calculator.displayValue += dot;
+            }
+         }
+
+         function handleOperator(nextOperator) {
+            const { firstOperand, displayValue, operator, history } = calculator;
+            const inputValue = parseFloat(displayValue);
+
+            if (operator && calculator.waitingForSecondOperand) {
+               calculator.operator = nextOperator;
+               calculator.history = history.slice(0, -1) + nextOperator;
+               updateDisplay();
+               return;
+            }
+
+            if (firstOperand == null && !isNaN(inputValue)) {
+               calculator.firstOperand = inputValue;
+            } else if (operator) {
+               const result = performCalculation[operator](firstOperand, inputValue);
+               calculator.displayValue = String(result);
+               calculator.firstOperand = result;
+            }
+
+            calculator.waitingForSecondOperand = true;
+            calculator.operator = nextOperator;
+
+            // Replace * with × in history
+            calculator.history += ` ${displayValue} ${nextOperator === '*' ? '×' : nextOperator}`;
+            updateDisplay();
+         }
+
+         const performCalculation = {
+            '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
+            '*': (firstOperand, secondOperand) => firstOperand * secondOperand, // This will stay as * for calculation
+            '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+            '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+            '=': (firstOperand, secondOperand) => secondOperand,
+         };
+
+         function resetCalculator() {
+            calculator.displayValue = '0';
+            calculator.firstOperand = null;
+            calculator.waitingForSecondOperand = false;
+            calculator.operator = null;
+            calculator.history = '';
+            updateDisplay();
+         }
+
+         function updateDisplay() {
+            const display = document.querySelector('.calculator-screen#screen');
+            const historyDisplay = document.querySelector('.calculator-screen#screen2');
+            display.value = calculator.displayValue;
+            historyDisplay.value = calculator.history;
+         }
+
+         updateDisplay();
+
+         const keys = document.querySelector('.calculator-keys');
+         keys.addEventListener('click', (event) => {
+            const { target } = event;
+            if (!target.matches('button')) {
+               return;
+            }
+
+            if (target.classList.contains('operator')) {
+               handleOperator(target.value);
+               return;
+            }
+
+            if (target.classList.contains('all-clear')) {
+               resetCalculator();
+               return;
+            }
+
+            if (target.classList.contains('equal-sign')) {
+               handleOperator(target.value);
+               calculator.history = ''; // Clear history after evaluation
+               return;
+            }
+
+            if (target.value === '.') {
+               inputDecimal(target.value);
+            } else {
+               inputDigit(target.value);
+            }
+            updateDisplay();
+         });
+
+         const root = document.documentElement;
+         const toggle = document.getElementById('themeToggle');
+
+         const darkTheme = {
+            '--color': 'black',
+            '--toolcolor': '#808080',
+            '--backgroundcolor': '#26282c',
+            '--shadow-dark': '#18191b',
+            '--shadow-light': '#34373d',
+            '--gradient-dark': '#292b2f',
+            '--gradient-light': '#222428',
+            '--color-accent': '#fffff'
+         };
+
+         const lightTheme = {
+            '--color': 'white',
+            '--toolcolor': '#7f7f7f',
+            '--backgroundcolor': '#e0e0e0',
+            '--shadow-dark': '#bebebe',
+            '--shadow-light': '#d9d9d9',
+            '--gradient-dark': '#f0f0f0',
+            '--gradient-light': '#d9d9d9',
+            '--color-accent': 'black'
+         };
+
+         toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+               setTheme(lightTheme);
+            } else {
+               setTheme(darkTheme);
+            }
+         });
+
+         function setTheme(theme) {
+            for (let key in theme) {
+               root.style.setProperty(key, theme[key]);
+            }
+         }
+      });
+   </script>
+
+
+</body>
+
+</html>
