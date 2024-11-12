@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Quiz with Timer Functions</title>
+<style>
+  body {
+    font-family: normal;
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  .container {
+    text-align: center;
+    color: #e0e0e0;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    padding: 40px;
+  }
+  #question {
+    font-size: 30px;
+    margin: 20px 0;
+  }
+  #timer {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #bdbdbd;
+  }
+  #userAnswer {
+    padding: 12px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    background-color: #333;
+    color: #e0e0e0;
+  }
+  #textarea {
+    padding: 12px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    background-color: #333;
+    color: #e0e0e0;
+  }
+  .functionBtn {
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 10px;
+    color: #fff;
+    background-color: #007bff;
+  }
+  .functionBtn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  #showIncorrectBtn {
+    background-color: #dc3545;
+  }
+  #showIncorrectBtn:hover {
+    background-color: #c82333;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="timer"></div>
+  <div id="question">Click a button to start</div>
+  <input type="number" id="userAnswer" placeholder="Your Answer" oninput="checkInputLength()" disabled>
+  <br>
+  <textarea id="textarea" placeholder="Additional Notes" rows="4"></textarea>
+  <br>
+  
+  <button class="functionBtn" onclick="startRandomQuestion()">Start Random Question</button>
+  <button class="functionBtn" id="showIncorrectBtn" onclick="showIncorrectAnswers()">Show Incorrect Answers</button>
+</div>
+
+<script>
+  var correctAnswer;
+  var timeLeft;
+  var questionText;
+  var timerInterval;
+  var isTimerRunning = false;
+  var incorrectAnswers = []; // Store incorrect answers
+
+  function startTimer(duration) {
+    timeLeft = duration;
+    document.getElementById("timer").innerText = "Time left: " + timeLeft + "s";
+    isTimerRunning = true;
+    timerInterval = setInterval(function() {
+      timeLeft--;
+      document.getElementById("timer").innerText = "Time left: " + timeLeft + "s";
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        alert(`Time's up!! The correct answer was ${correctAnswer}`);
+        generateNextQuestion();
+      }
+    }, 1000);
+  }
+
+  function startRandomQuestion() {
+    if (isTimerRunning) return;
+
+    var randomFunctionIndex = Math.floor(Math.random() * 7) + 1; // Randomly select function (1 to 7)
+    startFunction(randomFunctionIndex);
+  }
+
+  function startFunction(funcNum) {
+    // Enable the input field
+    document.getElementById("userAnswer").disabled = false;
+
+    switch (funcNum) {
+      case 1:
+        generateSquareRoot();
+        startTimer(12);
+        break;
+      case 2:
+        generateCubes();
+        startTimer(16);
+        break;
+      case 3:
+        generateSubtraction();
+        startTimer(20);
+        break;
+      case 4:
+        generateSquare();
+        startTimer(22);
+        break;
+      case 5:
+        generateComplexSquare();
+        startTimer(50);
+        break;
+      case 6:
+        generateMultiplication();
+        startTimer(20);
+        break;
+      case 7:
+        generateRangeSquare();
+        startTimer(19);
+        break;
+    }
+  }
+
+  function checkInputLength() {
+    var userAnswer = document.getElementById("userAnswer").value;
+    var answerLength = correctAnswer.toString().length;
+
+    // Automatically proceed when the length of the input matches the correct answer
+    if (userAnswer.length === answerLength) {
+      checkAnswer();
+    }
+  }
+
+  function checkAnswer() {
+    var userAnswer = parseFloat(document.getElementById("userAnswer").value);
+    
+    if (userAnswer === correctAnswer) {
+      generateNextQuestion();  // Automatically start next question
+    } else {
+      // Store incorrect answer
+      incorrectAnswers.push({
+        question: questionText,
+        userAnswer: userAnswer,
+        correctAnswer: correctAnswer
+      });
+      alert(`Incorrect! You entered ${userAnswer}. The correct answer was ${correctAnswer}.`);
+      generateNextQuestion();  // Automatically start next question after closing alert
+    }
+  }
+
+  function generateNextQuestion() {
+    document.getElementById("userAnswer").value = "";
+    document.getElementById("textarea").value = ""; // Clear the textarea
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+    startRandomQuestion();  // Start a new random question
+  }
+
+  function generateSquareRoot() {
+    var num = Math.floor(Math.random() * 150) + 1;  // Generate a random number between 1 and 150
+    var square = Math.pow(num, 2);  // Square the number
+    correctAnswer = num;  // The correct answer will be the square root, which is the original number
+    questionText = `${square}`;  // Display the squared number as the question
+    document.getElementById("question").innerText = `Find the square root:\n\n\ ${questionText}\n`;
+  }
+
+  function generateCubes() {
+    var num = Math.floor(Math.random() * 20) + 1;
+    correctAnswer = Math.pow(num, 3);
+    questionText = `${num}³`;
+    document.getElementById("question").innerText = ` ${questionText}`;
+  }
+
+  function generateSubtraction() {
+    var num = Math.floor(Math.random() * (89 - 11 + 1)) + 11;
+    correctAnswer = 100 - num;
+    questionText = `100 - ${num}`;
+    document.getElementById("question").innerText = ` ${questionText}`;
+  }
+
+  function generateSquare() {
+    var num = Math.floor(Math.random() * 100) + 1;
+    correctAnswer = Math.pow(num, 2);
+    questionText = `${num}²`;
+    document.getElementById("question").innerText = ` ${questionText}`;
+  }
+
+  function generateComplexSquare() {
+    var num = Math.floor(Math.random() * 9) + 1;  // Limit n to a maximum of 9 (1 to 9)
+    var offset = Math.random() < 0.5 ? -20 : 20;  // Either -20 or +20
+    var finalNum = num * 100 + offset;
+    correctAnswer = Math.pow(finalNum, 2);  // The square of (n * 100 ± 20)
+    questionText = `(${finalNum})²`;
+    document.getElementById("question").innerText = `${questionText}`;
+  }
+
+  function generateMultiplication() {
+    var digitCount = Math.floor(Math.random() * 5) + 4;  // Randomly pick between 4 to 8 digits
+    var num = Math.floor(Math.random() * Math.pow(10, digitCount - 1)) + Math.pow(10, digitCount - 1);  // Generate the number
+    correctAnswer = num * 11;
+    questionText = `${num} × 11`;
+    document.getElementById("question").innerText = ` ${questionText}`;
+  }
+
+  function generateRangeSquare() {
+    var num = Math.floor(Math.random() * 31) + 35; // Random number between 35 and 65
+    correctAnswer = Math.pow(num, 2);
+    questionText = `(${num})²`;
+    document.getElementById("question").innerText = ` ${questionText}`;
+  }
+function showIncorrectAnswers() {
+    if (incorrectAnswers.length === 0) {
+        alert("No incorrect answers so far!");
+        return;
+    }
+
+
+    var message = "Here are your incorrect answers:\n\n";
+    incorrectAnswers.forEach(function(item, index) {
+        message += `${index + 1}. Question: ${item.question}\n`;
+        message += `   Your Answer: ${item.userAnswer}\n`;
+        message += `   Correct Answer: ${item.correctAnswer}\n\n`;
+    });
+
+
+    alert(message);
+}
+</Script>
+
